@@ -1,0 +1,66 @@
+# AGIcommander Startup Configuration
+# This file defines how AGIcommander starts up and which components to enable
+
+agicommander:
+  name: "AGIcommander"
+  version: "0.1.0"
+  mode: "development"  # development, production, autonomous
+  safety_mode: true
+  log_level: "INFO"
+
+# MCP Servers Configuration
+servers:
+  memory:
+    vector_db:
+      enabled: true
+      command: "python servers/memory/vector_db/vector_db_mcp_server.py"
+      startup_timeout: 30
+      health_check_interval: 60
+      env:
+        VECTOR_DB_PATH: "./memory/chromadb"
+        EMBEDDING_MODEL: "all-MiniLM-L6-v2"
+    
+    s3:
+      enabled: true
+      command: "python servers/memory/S3/s3_mcp_server.py"
+      startup_timeout: 15
+      health_check_interval: 60
+      env:
+        AWS_DEFAULT_REGION: "us-east-1"
+  
+  code:
+    commander:
+      enabled: true
+      command: "python servers/code/commander.py"
+      startup_timeout: 20
+      health_check_interval: 60
+  
+  learning:
+    research:
+      enabled: true
+      command: "python servers/learning/research.py"
+      startup_timeout: 25
+      health_check_interval: 60
+  
+  self_reflection:
+    analyzer:
+      enabled: false  # Experimental feature
+      command: "python servers/self_reflection/analyzer.py"
+      startup_timeout: 30
+      health_check_interval: 120
+
+# Core Orchestrator Configuration
+orchestrator:
+  startup_timeout: 60
+  max_concurrent_tasks: 10
+  task_timeout: 300
+  enable_monitoring: true
+
+# System Monitoring Configuration
+monitoring:
+  enabled: true
+  metrics_interval: 30
+  log_performance: true
+  save_metrics_to_file: true
+  metrics_file: "./logs/performance_metrics.json"
+
