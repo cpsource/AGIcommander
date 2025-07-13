@@ -1,0 +1,151 @@
+version: '3.8'
+
+services:
+  # Main AGIcommander application
+  agicommander:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agicommander-main
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - XAI_API_KEY=${XAI_API_KEY:-}
+      - TAVILY_API_KEY=${TAVILY_API_KEY:-}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SAFETY_MODE=${SAFETY_MODE:-true}
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_URL=postgresql://agicommander:agicommander@postgres:5432/agicommander
+    volumes:
+      - ./config:/app/config
+      - ./memory:/app/memory
+      - ./logs:/app/logs
+      - ./workspace:/app/workspace  # Mount for code processing
+    depends_on:
+      - redis
+      - postgres
+      - chroma
+    networks:
+      - agicommander-network
+    restart: unless-stopped
+    command: python -m core.orchestrator
+
+  # Redis for caching and session storage
+  redis:
+    image: redis:7-alpine
+    container_name: agicommander-redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - agicommander-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # PostgreSQL for structured data storage
+  postgres:
+    image: postgres:15-alpine
+    container_name: agicommander-postgres
+    environment:
+      - POSTGRES_DB=agicommander
+      - POSTGRES_USER=agicommander
+      - POSTGRES_PASSWORD=agicommander
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - agicommander-network
+    restart: unless-stopped
+    ports:
+      - "5432:5432"  # Expose for external access if needed
+
+  # ChromaDB for vector storage
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: agicommander-chroma
+    environment:
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - agicommander-network
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+
+  # Optional: Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: agicommander-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - agicommander-network
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    profiles: ["monitoring"]
+
+  # Optional: Grafana for dashboards
+  grafana:
+    image: grafana/grafana:latest
+    container_name: agicommander-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=agicommander
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana:/etc/grafana/provisioning
+    networks:
+      - agicommander-network
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    profiles: ["monitoring"]
+
+  # Optional: Jupyter for experimentation
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile.jupyter
+    container_name: agicommander-jupyter
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=agicommander
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./:/home/jovyan/agicommander
+    networks:
+      - agicommander-network
+    ports:
+      - "8888:8888"
+    restart: unless-stopped
+    profiles: ["development"]
+
+volumes:
+  redis_data:
+    driver: local
+  postgres_data:
+    driver: local
+  chroma_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  agicommander-network:
+    driver: bridge
+
+# Development override file usage:
+# docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+

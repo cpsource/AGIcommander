@@ -1,0 +1,90 @@
+pip install langchain-google-genai python-dotenv pyyaml chromadb mcp
+
+# AGIcommander Requirements
+# Core dependencies for the AGIcommander system
+
+# LLM Integration
+langchain-google-genai>=2.0.0
+langchain>=0.1.0
+openai>=1.0.0  # For future OpenAI integration
+anthropic>=0.7.0  # For future Claude integration
+
+# MCP (Model Context Protocol)
+mcp>=0.9.0
+
+# Configuration and Environment
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# Vector Database and Memory
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Web and API
+requests>=2.31.0
+aiohttp>=3.8.0
+httpx>=0.24.0
+
+# File Processing
+pathlib2>=2.3.0  # Enhanced pathlib functionality
+
+# Async and Concurrency
+asyncio-mqtt>=0.13.0  # For future message queue integration
+
+# Logging and Monitoring
+structlog>=23.0.0
+prometheus-client>=0.16.0  # For metrics collection
+
+# Development and Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+black>=23.0.0  # Code formatting
+flake8>=6.0.0  # Linting
+mypy>=1.0.0  # Type checking
+
+# Optional: Advanced Features
+# Uncomment these for additional functionality
+
+# Research and Web Search
+# tavily-python>=0.3.0
+
+# Database Support
+# sqlalchemy>=2.0.0
+# psycopg2-binary>=2.9.0  # PostgreSQL
+# redis>=4.5.0  # Caching
+
+# Machine Learning
+# torch>=2.0.0
+# transformers>=4.30.0
+# huggingface-hub>=0.16.0
+
+# Computer Vision (if needed)
+# pillow>=10.0.0
+# opencv-python>=4.8.0
+
+# Document Processing
+# pypdf>=3.0.0
+# python-docx>=0.8.11
+# openpyxl>=3.1.0
+
+# Security
+# cryptography>=41.0.0
+# keyring>=24.0.0
+
+# Development Tools
+# jupyter>=1.0.0
+# ipython>=8.0.0
+
+# Deployment
+# docker>=6.0.0
+# kubernetes>=26.0.0
+# gunicorn>=21.0.0  # WSGI server
+
+# Monitoring and Observability
+# sentry-sdk>=1.30.0
+# datadog>=0.47.0
+
