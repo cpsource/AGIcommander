@@ -1,0 +1,255 @@
+{
+  "input": {
+    "original_sentence": "The tall woman quickly walked down the busy city street while talking on her phone",
+    "word_count": 15,
+    "complexity": "high"
+  },
+
+  "word_by_word_analysis": {
+    "the": {"importance": "SKIP", "reason": "article"},
+    "tall": {
+      "importance": "IMPORTANT",
+      "semantic": {
+        "primary": "tall",
+        "categories": ["physical_attribute", "size_descriptor"],
+        "domains": ["physical"],
+        "attributes": {"dimension": "height", "relative_scale": "above_average"}
+      }
+    },
+    "woman": {
+      "importance": "CRITICAL",
+      "semantic": {
+        "primary": "woman",
+        "categories": ["female_person", "adult", "living_thing"],
+        "domains": ["biological", "social"],
+        "taxonomy": {"genus": "homo", "species": "sapiens"}
+      }
+    },
+    "quickly": {
+      "importance": "IMPORTANT", 
+      "semantic": {
+        "primary": "quickly",
+        "categories": ["speed_modifier", "manner_adverb"],
+        "domains": ["temporal", "physical"],
+        "attributes": {"speed": "fast", "intensity": "high"}
+      }
+    },
+    "walked": {
+      "importance": "CRITICAL",
+      "semantic": {
+        "primary": "walk",
+        "categories": ["locomotion", "movement", "action"],
+        "domains": ["physical", "behavioral"],
+        "attributes": {"method": "bipedal", "speed_base": "moderate"}
+      }
+    },
+    "down": {
+      "importance": "IMPORTANT",
+      "semantic": {
+        "primary": "down",
+        "categories": ["direction", "spatial_relation"],
+        "domains": ["spatial"],
+        "attributes": {"axis": "along_path", "direction": "forward"}
+      }
+    },
+    "the": {"importance": "SKIP", "reason": "article"},
+    "busy": {
+      "importance": "IMPORTANT",
+      "semantic": {
+        "primary": "busy",
+        "categories": ["activity_level", "traffic_descriptor"],
+        "domains": ["social", "urban"],
+        "attributes": {"density": "high", "activity": "crowded"}
+      }
+    },
+    "city": {
+      "importance": "IMPORTANT",
+      "semantic": {
+        "primary": "city",
+        "categories": ["urban_area", "settlement", "place"],
+        "domains": ["geographical", "social"],
+        "attributes": {"population": "large", "development": "urban"}
+      }
+    },
+    "street": {
+      "importance": "CRITICAL",
+      "semantic": {
+        "primary": "street",
+        "categories": ["roadway", "infrastructure", "public_space"],
+        "domains": ["urban", "transportation"],
+        "attributes": {"surface": "paved", "access": "public"}
+      }
+    },
+    "while": {"importance": "SKIP", "reason": "temporal_conjunction"},
+    "talking": {
+      "importance": "CRITICAL",
+      "semantic": {
+        "primary": "talk",
+        "categories": ["communication", "speech", "action"],
+        "domains": ["social", "behavioral"],
+        "attributes": {"method": "vocal", "purpose": "communication"}
+      }
+    },
+    "on": {"importance": "SKIP", "reason": "preposition"},
+    "her": {"importance": "SKIP", "reason": "possessive_pronoun"},
+    "phone": {
+      "importance": "CRITICAL",
+      "semantic": {
+        "primary": "phone",
+        "categories": ["communication_device", "technology", "artifact"],
+        "domains": ["technological", "communication"],
+        "attributes": {"function": "telecommunication", "portability": "mobile"}
+      }
+    }
+  },
+
+  "semantically_reduced_representation": {
+    "entities": [
+      {
+        "type": "agent",
+        "concept": "woman",
+        "attributes": {
+          "height": "tall",
+          "taxonomy": {"species": "homo_sapiens"}
+        }
+      },
+      {
+        "type": "location", 
+        "concept": "street",
+        "attributes": {
+          "setting": "city",
+          "activity_level": "busy",
+          "infrastructure": "public_roadway"
+        }
+      },
+      {
+        "type": "device",
+        "concept": "phone",
+        "attributes": {
+          "function": "communication",
+          "type": "mobile"
+        }
+      }
+    ],
+
+    "actions": [
+      {
+        "type": "locomotion",
+        "concept": "walk",
+        "modifiers": {
+          "speed": "quickly",
+          "direction": "down",
+          "method": "bipedal"
+        }
+      },
+      {
+        "type": "communication",
+        "concept": "talk", 
+        "modifiers": {
+          "medium": "phone",
+          "simultaneous_with": "walking"
+        }
+      }
+    ],
+
+    "spatial_relations": [
+      {
+        "type": "path_movement",
+        "direction": "down",
+        "location": "city_street"
+      }
+    ],
+
+    "temporal_relations": [
+      {
+        "type": "simultaneous",
+        "primary_action": "walking",
+        "secondary_action": "talking"
+      }
+    ],
+
+    "attributes": {
+      "scene_type": "urban_pedestrian_activity",
+      "complexity": "multi_action",
+      "setting": "public_space"
+    }
+  },
+
+  "ultra_compact_version": {
+    "agent": "tall_woman→homo_sapiens",
+    "actions": ["walk→quickly→bipedal", "talk→phone→simultaneous"],
+    "location": "busy_city_street→public_roadway",
+    "devices": ["phone→mobile_communication"],
+    "pattern": "urban_multitasking"
+  },
+
+  "compression_analysis": {
+    "original": {
+      "tokens": 15,
+      "semantic_density": "medium",
+      "redundancy": "high (4 function words)"
+    },
+    "compressed": {
+      "semantic_concepts": 8,
+      "token_reduction": "47%",
+      "information_density": "very_high",
+      "lost_information": "minimal"
+    },
+    "enhanced_understanding": [
+      "Biological context (human locomotion capabilities)",
+      "Technological context (mobile communication)",
+      "Urban context (city infrastructure and behavior)",
+      "Multitasking behavior (simultaneous actions)",
+      "Physical attributes (height, speed)"
+    ]
+  },
+
+  "llm_processing_comparison": {
+    "traditional_approach": {
+      "input": "The tall woman quickly walked down the busy city street while talking on her phone",
+      "processing": "15 tokens → word-by-word analysis → context building",
+      "challenges": ["Function word noise", "Implicit relationships", "No semantic enhancement"]
+    },
+
+    "semantic_approach": {
+      "input": {
+        "agent": {"type": "homo_sapiens", "height": "tall"},
+        "actions": [{"walk": "quickly"}, {"talk": "via_phone"}],
+        "setting": {"busy_city_street": "public_infrastructure"}
+      },
+      "processing": "8 concepts → direct semantic understanding → enhanced reasoning",
+      "advantages": ["No noise", "Explicit relationships", "Rich context", "Biological/technological awareness"]
+    }
+  },
+
+  "reasoning_enhancement_examples": {
+    "spatial_reasoning": {
+      "traditional": "Knows 'down' and 'street' are mentioned",
+      "semantic": "Understands directional movement along urban infrastructure"
+    },
+    "biological_reasoning": {
+      "traditional": "Knows 'woman' and 'walked' are mentioned", 
+      "semantic": "Understands bipedal locomotion by homo sapiens with above-average height"
+    },
+    "technological_reasoning": {
+      "traditional": "Knows 'phone' and 'talking' are mentioned",
+      "semantic": "Understands mobile telecommunications enabling simultaneous communication during locomotion"
+    },
+    "behavioral_reasoning": {
+      "traditional": "Knows multiple actions occurred",
+      "semantic": "Understands urban multitasking behavior - common human pattern in city environments"
+    }
+  },
+
+  "integration_potential": {
+    "vector_database_storage": "Store semantic patterns for similar urban scenes",
+    "research_integration": "Query for studies on urban pedestrian behavior",
+    "s3_archival": "Save complex scene patterns for future reference",
+    "learning_opportunities": [
+      "Urban planning research",
+      "Human multitasking studies", 
+      "Mobile technology usage patterns",
+      "Pedestrian safety considerations"
+    ]
+  }
+}

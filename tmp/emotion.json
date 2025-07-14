@@ -1,0 +1,184 @@
+{
+  "emotional_semantic_integration": {
+    "original_sentence": "The angry woman quickly walked down the busy city street while talking loudly on her phone",
+    
+    "semantic_without_emotion": {
+      "agent": "woman→homo_sapiens",
+      "actions": ["walk→quickly", "talk→phone"],
+      "location": "busy_city_street"
+    },
+    
+    "semantic_with_emotion": {
+      "agent": {
+        "type": "woman→homo_sapiens",
+        "emotional_state": {
+          "primary": "anger",
+          "intensity": 0.8,
+          "valence": "negative", 
+          "activation": "high"
+        }
+      },
+      "actions": [
+        {
+          "type": "walk→quickly",
+          "emotional_modifier": "determined_forceful",
+          "speed_modifier": 1.3,
+          "posture": "tense_upright"
+        },
+        {
+          "type": "talk→phone",
+          "emotional_modifier": "intense_direct",
+          "volume": "loud",
+          "tone": "aggressive"
+        }
+      ],
+      "behavioral_predictions": {
+        "risk_tolerance": 0.7,
+        "decision_speed": "fast",
+        "social_approach": "confrontational",
+        "patience_level": "low"
+      }
+    }
+  },
+
+  "emotion_taxonomy": {
+    "core_emotions": {
+      "joy": {"valence": "positive", "activation": "medium", "behaviors": ["approach", "social_engagement", "exploration"]},
+      "anger": {"valence": "negative", "activation": "high", "behaviors": ["confrontation", "aggressive_action", "boundary_setting"]},
+      "sadness": {"valence": "negative", "activation": "low", "behaviors": ["withdrawal", "seeking_comfort", "reflection"]},
+      "fear": {"valence": "negative", "activation": "high", "behaviors": ["avoidance", "caution", "seeking_safety"]},
+      "surprise": {"valence": "neutral", "activation": "high", "behaviors": ["attention_focusing", "information_seeking"]},
+      "disgust": {"valence": "negative", "activation": "medium", "behaviors": ["avoidance", "rejection", "distancing"]},
+      "trust": {"valence": "positive", "activation": "low", "behaviors": ["cooperation", "openness", "vulnerability"]},
+      "anticipation": {"valence": "positive", "activation": "medium", "behaviors": ["planning", "preparation", "goal_pursuit"]}
+    },
+    
+    "complex_emotions": {
+      "love": {"components": ["joy", "trust"], "behaviors": ["bonding", "care_giving", "protection"]},
+      "guilt": {"components": ["fear", "disgust"], "behaviors": ["apology", "repair_action", "confession"]},
+      "pride": {"components": ["joy", "anger"], "behaviors": ["display", "confidence", "achievement_seeking"]},
+      "contempt": {"components": ["anger", "disgust"], "behaviors": ["superiority_display", "dismissal"]},
+      "shame": {"components": ["fear", "disgust"], "behaviors": ["hiding", "social_withdrawal", "self_criticism"]}
+    },
+    
+    "mood_states": {
+      "optimistic": {"duration": "hours_to_days", "behaviors": ["risk_taking", "goal_pursuit"]},
+      "pessimistic": {"duration": "hours_to_days", "behaviors": ["risk_avoidance", "defensive_planning"]},
+      "stressed": {"duration": "minutes_to_hours", "behaviors": ["urgency", "shortened_attention"]},
+      "calm": {"duration": "minutes_to_hours", "behaviors": ["measured_responses", "patience"]},
+      "energetic": {"duration": "hours", "behaviors": ["high_activity", "multitasking"]},
+      "lethargic": {"duration": "hours", "behaviors": ["low_activity", "minimal_engagement"]}
+    }
+  },
+
+  "emotion_driven_timeline_branching": {
+    "scenario": "angry_woman_at_intersection",
+    
+    "emotional_influence_on_probabilities": {
+      "baseline_neutral": {
+        "continue_straight": 0.40,
+        "turn_left": 0.25,
+        "turn_right": 0.20,
+        "enter_store": 0.10,
+        "stop_and_wait": 0.05
+      },
+      
+      "with_anger_emotion": {
+        "continue_straight": 0.55,  # Anger increases direct action
+        "turn_left": 0.20,          # Reduced turning (less flexible)
+        "turn_right": 0.15,         # Reduced turning
+        "enter_store": 0.02,        # Much less likely to shop when angry
+        "confront_someone": 0.08    # NEW branch - anger creates confrontation opportunity
+      }
+    },
+    
+    "emotional_state_transitions": {
+      "t0": {"emotion": "anger", "intensity": 0.8, "trigger": "phone_call_content"},
+      "t5": {"emotion": "anger", "intensity": 0.7, "decay": "slight_cooling"},
+      "t10": {"emotion": "anger_or_relief", "intensity": "depends_on_action", "branches": {
+        "if_confronted": {"emotion": "anger", "intensity": 0.9},
+        "if_continued": {"emotion": "anger", "intensity": 0.6},
+        "if_distracted": {"emotion": "surprise_then_calm", "intensity": 0.3}
+      }}
+    }
+  },
+
+  "behavioral_pattern_predictions": {
+    "walking_with_emotions": {
+      "joy": {"speed": "bouncy_energetic", "path": "exploratory", "posture": "upright_open"},
+      "anger": {"speed": "fast_determined", "path": "direct_forceful", "posture": "tense_forward"},
+      "sadness": {"speed": "slow_dragging", "path": "meandering", "posture": "slumped_inward"},
+      "fear": {"speed": "quick_nervous", "path": "cautious_evasive", "posture": "alert_defensive"},
+      "calm": {"speed": "steady_measured", "path": "purposeful", "posture": "relaxed_balanced"}
+    },
+    
+    "decision_making_with_emotions": {
+      "optimistic": {"risk_tolerance": "high", "options_considered": "many", "time_taken": "quick_confident"},
+      "pessimistic": {"risk_tolerance": "low", "options_considered": "few_safe", "time_taken": "slow_cautious"},
+      "angry": {"risk_tolerance": "high", "options_considered": "limited", "time_taken": "impulsive"},
+      "fearful": {"risk_tolerance": "very_low", "options_considered": "safety_focused", "time_taken": "delayed"},
+      "stressed": {"risk_tolerance": "variable", "options_considered": "limited", "time_taken": "rushed"}
+    },
+    
+    "social_interaction_with_emotions": {
+      "joy": {"approach": "engaging_warm", "communication": "open_enthusiastic", "cooperation": "high"},
+      "anger": {"approach": "confrontational", "communication": "direct_intense", "cooperation": "conditional"},
+      "sadness": {"approach": "withdrawn_minimal", "communication": "quiet_brief", "cooperation": "passive"},
+      "trust": {"approach": "open_vulnerable", "communication": "honest_sharing", "cooperation": "high"},
+      "fear": {"approach": "cautious_distant", "communication": "careful_guarded", "cooperation": "limited"}
+    }
+  },
+
+  "integration_with_agi_systems": {
+    "vector_database_enhancement": {
+      "original_storage": "woman walks street",
+      "emotional_storage": "angry_woman→forceful_walk→confrontational_tendency→high_activation",
+      "retrieval_benefit": "Can find similar emotional patterns and predict behaviors"
+    },
+    
+    "research_server_queries": {
+      "emotion_triggered": [
+        "anger management techniques for pedestrians",
+        "urban stress and aggressive behavior studies", 
+        "emotional contagion in public spaces",
+        "de-escalation strategies for public confrontations"
+      ]
+    },
+    
+    "timeline_branching_enhancement": {
+      "emotional_momentum": "Emotions influence future branch probabilities",
+      "state_transitions": "Emotions evolve based on chosen actions",
+      "compound_effects": "Multiple people's emotions interact in public spaces"
+    }
+  },
+
+  "practical_implementation": {
+    "semantic_representation_with_emotion": {
+      "compact_format": "angry_woman[0.8]→forceful_walk[1.3x]→phone_talk[loud]→intersection_choice",
+      "full_format": {
+        "agent": {"type": "homo_sapiens", "gender": "female", "emotion": {"primary": "anger", "intensity": 0.8}},
+        "actions": [
+          {"type": "locomotion", "speed_modifier": 1.3, "emotional_coloring": "determined"},
+          {"type": "communication", "volume_modifier": 1.5, "emotional_coloring": "intense"}
+        ],
+        "predictions": {"confrontation_likelihood": 0.7, "patience_level": 0.2, "risk_tolerance": 0.8}
+      }
+    },
+    
+    "emotion_detection_cues": {
+      "visual": ["fast_walking", "tense_posture", "facial_expression", "gesture_intensity"],
+      "auditory": ["voice_volume", "speech_pace", "tone_quality"],
+      "behavioral": ["path_directness", "interaction_style", "decision_speed"],
+      "contextual": ["time_of_day", "social_setting", "recent_events"]
+    },
+    
+    "compression_benefits": {
+      "traditional": "The angry woman quickly walked down the busy city street while talking loudly on her phone",
+      "tokens": 16,
+      "emotional_semantic": "angry_woman[0.8]→forceful_walk→loud_phone_talk→high_confrontation_risk",
+      "compressed_tokens": 6,
+      "compression": "62% reduction",
+      "information_gain": "Adds behavioral predictions and emotional context"
+    }
+  }
+}

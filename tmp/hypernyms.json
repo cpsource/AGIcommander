@@ -1,0 +1,97 @@
+{
+  "original_wordnet_hierarchy": {
+    "raw_text": "woman, adult female => female, female person => person, individual, someone, somebody, mortal, soul => organism, being => living thing, animate thing => whole, unit => object, physical object => physical entity => entity",
+    "term_count": 21,
+    "token_count_estimate": 85
+  },
+  
+  "reduced_structure": {
+    "primary": "woman",
+    "synonyms": ["adult_female"],
+    "categories": ["female_person", "adult", "living_thing"],
+    "domains": ["biological", "social"],
+    "taxonomy": {
+      "kingdom": "animalia",
+      "class": "mammalia",
+      "order": "primates", 
+      "family": "hominidae",
+      "genus": "homo",
+      "species": "sapiens"
+    },
+    "_meta": {
+      "original_terms": 21,
+      "reduced_terms": 4,
+      "compression_ratio": 0.19,
+      "token_reduction": "81%"
+    }
+  },
+
+  "other_examples": {
+    "car": {
+      "primary": "car",
+      "synonyms": ["automobile", "motor_vehicle"],
+      "categories": ["vehicle", "machine", "artifact"],
+      "domains": ["transportation", "mechanical"],
+      "taxonomy": null
+    },
+    
+    "dog": {
+      "primary": "dog",
+      "synonyms": ["canine", "domestic_dog"],
+      "categories": ["mammal", "carnivore", "animal"],
+      "domains": ["biological"],
+      "taxonomy": {
+        "kingdom": "animalia",
+        "phylum": "chordata",
+        "class": "mammalia",
+        "order": "carnivora",
+        "family": "canidae",
+        "genus": "canis",
+        "species": "lupus_familiaris"
+      }
+    },
+
+    "scientist": {
+      "primary": "scientist",
+      "synonyms": ["researcher"],
+      "categories": ["person", "professional", "adult"],
+      "domains": ["social", "intellectual"],
+      "taxonomy": {
+        "kingdom": "animalia",
+        "class": "mammalia",
+        "order": "primates",
+        "genus": "homo",
+        "species": "sapiens"
+      }
+    }
+  },
+
+  "filtering_rules": {
+    "remove_abstract_terms": [
+      "entity", "thing", "whole", "unit", "object", 
+      "physical_entity", "causal_agent", "being"
+    ],
+    "keep_meaningful_terms": [
+      "person", "individual", "adult", "living_thing",
+      "organism", "animal", "human", "mammal"
+    ],
+    "biological_classification": "Added automatically for living things",
+    "max_categories": 3,
+    "max_domains": 2
+  },
+
+  "usage_for_llm": {
+    "before": "The woman walked down the street. [LLM processes full WordNet hierarchy: woman => adult female => female person => person => individual => someone => somebody => mortal => soul => organism => being => living thing => animate thing => whole => unit => object => physical object => physical entity => entity...]",
+    
+    "after": "The woman walked down the street. [LLM processes: {\"primary\": \"woman\", \"categories\": [\"female_person\", \"adult\", \"living_thing\"], \"taxonomy\": {\"species\": \"homo_sapiens\"}}]",
+    
+    "benefits": [
+      "81% fewer tokens to process",
+      "Preserves essential semantic meaning", 
+      "Adds biological context when relevant",
+      "Removes redundant abstract concepts",
+      "More efficient reasoning and generation"
+    ]
+  }
+}
+

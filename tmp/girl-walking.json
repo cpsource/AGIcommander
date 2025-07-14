@@ -1,0 +1,189 @@
+{
+  "timeline_example": "Girl walks down street THEN branches",
+  
+  "compact_representation": {
+    "t0": {
+      "agent": "girl→homo_sapiens",
+      "action": "walk→bipedal_locomotion", 
+      "location": "street→public_roadway",
+      "state": "in_motion"
+    },
+    
+    "t5_decision_point": "approaches_intersection→choice_required",
+    
+    "branches": {
+      "continues_straight": {
+        "probability": 0.40,
+        "semantic": "continue→walk→same_direction",
+        "conditions": ["clear_path", "same_destination"]
+      },
+      "turns_left": {
+        "probability": 0.25,
+        "semantic": "turn→left→new_direction",
+        "conditions": ["destination_left", "safe_turn"]
+      },
+      "turns_right": {
+        "probability": 0.20,
+        "semantic": "turn→right→new_direction", 
+        "conditions": ["destination_right", "safe_turn"]
+      },
+      "enters_store": {
+        "probability": 0.10,
+        "semantic": "enter→retail_location→shopping",
+        "conditions": ["store_open", "shopping_intent"]
+      },
+      "meets_friend": {
+        "probability": 0.05,
+        "semantic": "stop→social_interaction→communication",
+        "conditions": ["friend_present", "recognition"]
+      }
+    }
+  },
+
+  "multi_level_branching": {
+    "t0": "girl→walks→street",
+    
+    "t5_branch1": {
+      "trigger": "intersection_decision",
+      "outcomes": ["straight", "left", "right", "store", "friend"]
+    },
+    
+    "t10_branch2a": {
+      "from": "enters_store",
+      "trigger": "inside_store_decision", 
+      "outcomes": ["browse_only", "make_purchase", "ask_clerk", "leave_quickly"]
+    },
+    
+    "t10_branch2b": {
+      "from": "meets_friend",
+      "trigger": "social_interaction_decision",
+      "outcomes": ["brief_chat", "walk_together", "make_plans", "exchange_contact"]
+    },
+    
+    "t15_branch3": {
+      "from": "make_purchase",
+      "trigger": "payment_method_decision",
+      "outcomes": ["cash", "card", "mobile_pay", "request_discount"]
+    }
+  },
+
+  "temporal_structure": {
+    "timeline_segments": [
+      {
+        "time_range": "0-5s",
+        "description": "Initial walking state",
+        "semantic": "girl→walk→street→locomotion",
+        "certainty": 1.0,
+        "branches": 1
+      },
+      {
+        "time_range": "5-10s", 
+        "description": "First decision point",
+        "semantic": "intersection→choice→multiple_paths",
+        "certainty": "varies",
+        "branches": 5
+      },
+      {
+        "time_range": "10-15s",
+        "description": "Secondary decisions",
+        "semantic": "context_dependent→actions",
+        "certainty": "varies", 
+        "branches": "2-4 per primary branch"
+      },
+      {
+        "time_range": "15-20s",
+        "description": "Tertiary consequences",
+        "semantic": "cascading→effects→outcomes",
+        "certainty": "low",
+        "branches": "exponentially_expanding"
+      }
+    ]
+  },
+
+  "probability_evolution": {
+    "t0": {
+      "walking": 1.00
+    },
+    "t5": {
+      "continues_straight": 0.40,
+      "turns_left": 0.25, 
+      "turns_right": 0.20,
+      "enters_store": 0.10,
+      "meets_friend": 0.05
+    },
+    "t10_if_entered_store": {
+      "browse_only": 0.04,     # 0.10 * 0.40
+      "make_purchase": 0.03,   # 0.10 * 0.30
+      "ask_clerk": 0.02,       # 0.10 * 0.20
+      "leave_quickly": 0.01    # 0.10 * 0.10
+    }
+  },
+
+  "semantic_compression_benefits": {
+    "traditional_scenario_planning": {
+      "description": "Girl walks down street. At intersection, she might continue straight, turn left, turn right, enter a store, or meet a friend. If she enters store, she might browse, buy something, ask for help, or leave.",
+      "tokens": 38,
+      "structure": "verbose_narrative"
+    },
+    
+    "semantic_compressed": {
+      "t0": "girl→walk→street",
+      "t5_branches": ["straight→0.4", "left→0.25", "right→0.2", "store→0.1", "friend→0.05"],
+      "t10_conditional": {"store": ["browse→0.4", "buy→0.3", "ask→0.2", "exit→0.1"]},
+      "tokens": 12,
+      "compression": "68% reduction"
+    }
+  },
+
+  "agi_integration_example": {
+    "scenario_planning": {
+      "query": "What should girl do if it starts raining?",
+      "timeline_analysis": [
+        "Check current branch probabilities",
+        "Add environmental factor: rain→0.8_probability", 
+        "Recalculate branch weights",
+        "New priorities: store→0.4, continue→0.3, friend→0.2, turns→0.1"
+      ],
+      "semantic_update": "rain→environmental_pressure→seek_shelter→store_preference"
+    },
+    
+    "decision_optimization": {
+      "goal": "Minimize travel time to destination",
+      "constraints": ["safety", "weather", "social_obligations"],
+      "optimal_branch": "Calculate shortest path through probability space",
+      "recommendation": "straight→0.7 (if weather clear), store→0.6 (if raining)"
+    },
+    
+    "learning_integration": {
+      "vector_database": "Store successful decision patterns",
+      "research_server": "Query pedestrian behavior studies",
+      "s3_archive": "Save scenario outcomes for future reference"
+    }
+  },
+
+  "quantum_like_behavior": {
+    "superposition_state": {
+      "before_observation": "Girl exists in all possible states simultaneously",
+      "branches": ["straight", "left", "right", "store", "friend"],
+      "total_probability": 1.0
+    },
+    
+    "wave_function_collapse": {
+      "observation": "Security camera shows girl entering store",
+      "result": "All other branches collapse to probability 0",
+      "new_state": "Girl definitively in store→new branch points emerge"
+    },
+    
+    "measurement_effect": {
+      "before": "5 possible futures with various probabilities", 
+      "after": "1 actual timeline + new branching points from confirmed state"
+    }
+  },
+
+  "implementation_notes": {
+    "memory_efficiency": "Store only active branches + compressed semantic representations",
+    "computation": "Calculate probabilities on-demand rather than storing all combinations",
+    "pruning": "Remove branches below probability threshold (e.g., <0.01)",
+    "integration": "Connect with semantic processor for event descriptions and hypernym reducer for concept compression"
+  }
+}
