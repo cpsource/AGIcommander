@@ -1,0 +1,16 @@
+Here's a clearer version of that prompt:
+
+**Your job is to:**
+
+1. **Analyze the attached `commander.py` file** and identify any features, command-line options, or functionality that may be missing from the current `README-commander.md` documentation.
+
+2. **Update `README-commander.md`** to include:
+   - Any new command-line switches (like `-r`, `-x`, `-y`)
+   - The `.skip-commander` file functionality
+   - Usage examples and explanations
+   - Any other features or changes not currently documented
+
+3. **Create the updated `README-commander.md` file** as a downloadable artifact so I can save it to my project.
+
+**Context:** I want to ensure the README documentation is complete and matches all current functionality in the commander.py script.
+
