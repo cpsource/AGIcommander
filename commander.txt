@@ -1,4 +1,4 @@
-"This subdirectory explores an approach to reduce neural network training time by separating metadata from text and using a two-stage training process:
+The subdirectory tmp/ explores an approach to reduce neural network training time by separating metadata from text and using a two-stage training process:
 
 Stage 1: Train the network on metadata first, then freeze those layers
 Stage 2: Train on the actual text data with the metadata layers frozen
