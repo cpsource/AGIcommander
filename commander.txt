@@ -1,16 +1,12 @@
-Here's a clearer version of that prompt:
+"This subdirectory explores an approach to reduce neural network training time by separating metadata from text and using a two-stage training process:
 
-**Your job is to:**
+Stage 1: Train the network on metadata first, then freeze those layers
+Stage 2: Train on the actual text data with the metadata layers frozen
 
-1. **Analyze the attached `commander.py` file** and identify any features, command-line options, or functionality that may be missing from the current `README-commander.md` documentation.
+The approach involves:
 
-2. **Update `README-commander.md`** to include:
-   - Any new command-line switches (like `-r`, `-x`, `-y`)
-   - The `.skip-commander` file functionality
-   - Usage examples and explanations
-   - Any other features or changes not currently documented
+Running sentence text through semantic and metadata pre-processors
+Splitting training into two distinct phases
+Leveraging metadata to bootstrap the learning process
 
-3. **Create the updated `README-commander.md` file** as a downloadable artifact so I can save it to my project.
-
-**Context:** I want to ensure the README documentation is complete and matches all current functionality in the commander.py script.
-
+I have various tools available through the MCP interface. Could you create a README-pre-processor.md file that outlines this approach and provide sample code to implement this two-stage training strategy?"
