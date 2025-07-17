@@ -1,4 +1,3 @@
-
 Commander is an AI-powered tool that works at the project level instead of just one file at a time. You describe what you want done in a `commander.txt` file, then unleash the `commander.py` Python script and it will make any changes you request across multiple files simultaneously.
 
 Think of Commander as your AI-powered development assistant that can understand project-wide requirements and implement changes consistently across your entire codebase.
@@ -90,6 +89,40 @@ git diff
 | `-x, --extensions` | File extensions to process | `python commander.py -x "py,js,html"` |
 | `-y, --yes` | Auto-confirm changes | `python commander.py -y` |
 | `-f, --files` | Comma-separated list of files to process | `python commander.py -f "file1.py,file2.js"` |
+| `-m, --model` | Specify the AI model to use | `python commander.py -m chatgpt` |
+
+## -m, --model Option
+
+The `-m` or `--model` option allows you to specify which AI model Commander should use for processing your files. Different models may provide varying levels of performance, accuracy, and cost.
+
+### Supported Models
+
+- `gemini` (default): Google's Gemini model. Requires `GOOGLE_API_KEY`.
+- `claude`: Anthropic's Claude model. Requires `ANTHROPIC_API_KEY`.
+- `chatgpt`: OpenAI's ChatGPT model. Requires `OPENAI_API_KEY`.
+- `xai`: A specific XAI model. Requires `XAI_API_KEY`.
+- `watsonx`: IBM's WatsonX model. Requires `WATSONX_API_KEY` and `WATSONX_PROJECT_ID`.
+
+### Setting API Keys
+
+Each model requires a corresponding API key, which you should store in your `~/.env` file. For example:
+
+```bash
+GOOGLE_API_KEY=your_gemini_api_key
+ANTHROPIC_API_KEY=your_claude_api_key
+OPENAI_API_KEY=your_chatgpt_api_key
+XAI_API_KEY=your_xai_api_key
+WATSONX_API_KEY=your_watsonx_api_key
+WATSONX_PROJECT_ID=your_watsonx_project_id
+```
+
+### Usage Example
+
+To use the ChatGPT model:
+
+```bash
+python commander.py -m chatgpt
+```
 
 ## .skip-commander file
 
@@ -273,15 +306,3 @@ See the LICENSE file in this respository.
 ---
 
 **Pro Tip**: Start with small, specific instructions in `commander.txt` and gradually increase complexity as you become familiar with how the AI interprets your requests.
-```
-
-RESPONSE FORMAT:
-For any files you wish to return in your reply, they must have this format:
-
----<full-file-spec>---
-```<filetype>
-< file contents here >
-```
-
-Only return files that need to be changed. If a file doesn't need modification, don't include it in your response.
-Ensure all code is syntactically correct and follows best practices for the respective language.

@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """
-commander.py - A smart code processor using Gemini 2.5 Pro
+commander.py - A smart code processor using multiple LLM providers
 
 This tool reads files (optionally recursively), reads instructions from
-commander.txt, and applies those instructions to all files using Gemini AI.
+commander.txt, and applies those instructions to all files using various AI models.
 
 Usage:
-    python commander.py [-r] [-x "ext1,ext2,ext3"] [-y]
+    python commander.py [-r] [-x "ext1,ext2,ext3"] [-y] [-m model]
     
     -r: Process files recursively through subdirectories
     -x: Comma-separated list of file extensions (default: "py")
         Example: -x "py,json,md" or -x "js,html,css"
     -y: Automatically confirm file modifications (skip confirmation prompt)
+    -m: Model to use (default: "gemini")
+        Options: gemini, claude, chatgpt, xai, watsonx
     
     .skip-commander: Place this file in any directory to skip processing that directory
 """
@@ -24,8 +26,9 @@ from pathlib import Path
 from typing import List, Dict, Tuple
 import re
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.schema import HumanMessage, SystemMessage
+
+# Import the comutl library
+from comutl import get_llm_class, MODEL_REGISTRY
 
 def read_system_txt(filename: str = "system.txt") -> str:
     """Read system.txt, skipping comment lines starting with '#'."""
@@ -201,71 +204,11 @@ class CommanderInstructions:
             sys.exit(1)
 
 
-class GeminiProcessor:
-    """Handles communication with Gemini AI"""
-    
-    def __init__(self, api_key: str):
-        self.llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash-exp",  # Using the latest available model
-            google_api_key=api_key,
-            temperature=0.1  # Low temperature for consistent code generation
-        )
-        
-    def create_prompt(self, instructions: str, files_data: Dict[str, Tuple[str, str]]) -> str:
-        """Create a comprehensive prompt for Gemini"""
-        prompt = f"""You are a skilled developer tasked with modifying multiple files according to specific instructions.
-
-INSTRUCTIONS:
-{instructions}
-
-FILES TO PROCESS:
-"""
-        
-        for filename, (content, language) in files_data.items():
-            if language:
-                prompt += f"\n---{filename}---\n```{language}\n{content}\n```\n"
-            else:
-                prompt += f"\n---{filename}---\n```\n{content}\n```\n"
-        
-        prompt += """
-
-RESPONSE FORMAT:
-For any files you wish to return in your reply, they must have this format:
-
----<full-file-spec>---
-```<filetype>
-< file contents here >
-```
-
-Only return files that need to be changed. If a file doesn't need modification, don't include it in your response.
-Ensure all code is syntactically correct and follows best practices for the respective language.
-"""
-        
-        return prompt
-    
-    def process_files(self, instructions: str, files_data: Dict[str, Tuple[str, str]]) -> str:
-        """Send files to Gemini for processing"""
-        prompt = self.create_prompt(instructions, files_data)
-        
-        try:
-            messages = [
-                SystemMessage(content="You are an expert developer who carefully modifies code according to instructions."),
-                HumanMessage(content=prompt)
-            ]
-            
-            response = self.llm.invoke(messages)
-            return response.content
-            
-        except Exception as e:
-            print(f"Error communicating with Gemini: {e}")
-            return ""
-
-
 class ResponseParser:
-    """Parses Gemini's response and extracts modified files"""
+    """Parses LLM response and extracts modified files"""
 
     def parse_response(self, response: str) -> Dict[str, str]:
-        """Parse Gemini's response and extract modified files using simple line-by-line approach."""
+        """Parse LLM response and extract modified files using simple line-by-line approach."""
         modified_files = {}
         
         # Convert response to lines for processing
@@ -378,26 +321,46 @@ def parse_extensions(extensions_string: str) -> List[str]:
     return extensions if extensions else ['py']
 
 
+def get_api_key_for_model(model_name: str) -> str:
+    """Get the appropriate API key for the specified model"""
+    # Mapping of model names to their expected environment variables
+    env_var_map = {
+        'gemini': 'GOOGLE_API_KEY',
+        'claude': 'ANTHROPIC_API_KEY',
+        'chatgpt': 'OPENAI_API_KEY',
+        'xai': 'XAI_API_KEY',
+        'watsonx': 'WATSONX_API_KEY'
+    }
+    
+    env_var = env_var_map.get(model_name)
+    if not env_var:
+        raise ValueError(f"Unknown model: {model_name}")
+    
+    api_key = os.getenv(env_var)
+    if not api_key:
+        print(f"Error: {env_var} not found in ~/.env file")
+        print(f"Please add your {model_name} API key to ~/.env as: {env_var}=your_key_here")
+        sys.exit(1)
+    
+    return api_key
+
+
 def main():
     """Main execution function"""
     # Load environment variables
     load_dotenv(os.path.expanduser("~/.env"))
     
-    # Get API key
-    api_key = os.getenv("GOOGLE_API_KEY")
-    if not api_key:
-        print("Error: GOOGLE_API_KEY not found in ~/.env file")
-        print("Please add your Google API key to ~/.env as: GOOGLE_API_KEY=your_key_here")
-        sys.exit(1)
-    
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description="Process files with Gemini AI")
+    parser = argparse.ArgumentParser(description="Process files with various LLM providers")
     parser.add_argument("-r", "--recursive", action="store_true", 
                        help="Process files recursively through subdirectories")
     parser.add_argument("-x", "--extensions", type=str, default="py",
                        help="Comma-separated list of file extensions (default: py). Example: 'py,json,md'")
     parser.add_argument("-y", "--yes", action="store_true",
                        help="Automatically confirm file modifications (skip confirmation prompt)")
+    parser.add_argument("-m", "--model", type=str, default="gemini",
+                       choices=list(MODEL_REGISTRY.keys()),
+                       help=f"Model to use (default: gemini). Options: {', '.join(MODEL_REGISTRY.keys())}")
     parser.add_argument("-f", "--files", type=str,
                         help="Comma-separated list of files to process instead of searching the directory tree."
     )
@@ -411,13 +374,26 @@ def main():
     # Parse extensions
     extensions = parse_extensions(args.extensions)
     
+    # Get API key for selected model
+    api_key = get_api_key_for_model(args.model)
+    
+    # Get additional config for WatsonX
+    additional_config = {}
+    if args.model == 'watsonx':
+        project_id = os.getenv('WATSONX_PROJECT_ID')
+        if not project_id:
+            print("Error: WATSONX_PROJECT_ID not found in ~/.env file")
+            print("Please add your WatsonX project ID to ~/.env as: WATSONX_PROJECT_ID=your_project_id")
+            sys.exit(1)
+        additional_config['project_id'] = project_id
+    
     print("🚀 Commander.py - Multi-Language File Processor")
     print("=" * 50)
+    print(f"🤖 Using model: {args.model}")
     print(f"📋 Target extensions: {', '.join(extensions)}")
     print(f"💡 Tip: Place '.skip-commander' file in directories to skip them")
     
     # Step 1: Find files
-
     found_files = []
     file_processor = FileProcessor(args.recursive, extensions)
 
@@ -437,10 +413,6 @@ def main():
     else:
         print(f"📂 Finding files {'(recursive)' if args.recursive else '(current directory only)'}...")
         found_files = file_processor.find_files()
-
-#    print(f"📂 Finding files {'(recursive)' if args.recursive else '(current directory only)'}...")
-#    file_processor = FileProcessor(args.recursive, extensions)
-#    found_files = file_processor.find_files()
     
     if not found_files:
         print(f"No files found with extensions: {', '.join(extensions)}")
@@ -481,32 +453,66 @@ def main():
     if not files_data:
         print("No files could be read!")
         sys.exit(1)
-
-    # debug - stop for now
-    #print("Exiting")
-    #sys.exit(0)
     
-    # Step 4: Process with Gemini
-    print("\n🤖 Processing files with Gemini AI...")
-    gemini_processor = GeminiProcessor(api_key)
-    response = gemini_processor.process_files(instructions, files_data)
+    # Step 4: Initialize LLM processor
+    print(f"\n🤖 Initializing {args.model} LLM processor...")
+    try:
+        llm_class = get_llm_class(args.model)
+        llm_processor = llm_class(api_key, **additional_config)
+        print(f"✅ {llm_processor.model_name} processor initialized")
+    except Exception as e:
+        print(f"❌ Error initializing {args.model} processor: {e}")
+        sys.exit(1)
+    
+    # Step 5: Process with LLM
+    print(f"\n🤖 Processing files with {llm_processor.model_name}...")
+    response = llm_processor.process_files(instructions, files_data)
     
     if not response:
-        print("No response from Gemini!")
+        print("No response from LLM!")
         sys.exit(1)
     
     print(f"Received response: {len(response)} characters")
-    # Write Gemini response to commander.log
+ 
+    # Write LLM response to commander.log
     try:
         with open("commander.log", "w", encoding="utf-8") as log_file:
             log_file.write(response)
-        print(f"✅ Gemini response saved to commander.log ({len(response)} characters)")
+        print(f"✅ LLM response saved to commander.log ({len(response)} characters)")
     except Exception as e:
         print(f"❌ Failed to write commander.log: {e}")
 
-#    print(response)
+    # Write pretty-printed JSON metadata to commander.json
+    try:
+        import json
+        from datetime import datetime
     
-    # Step 5: Parse response and update files
+        # Create metadata about the processing session
+        metadata = {
+            "timestamp": datetime.now().isoformat(),
+            "model": args.model,
+            "model_name": llm_processor.model_name,
+            "files_processed": list(files_data.keys()),
+            "file_count": len(files_data),
+            "extensions": extensions,
+            "recursive": args.recursive,
+            "instructions_length": len(instructions),
+            "response_length": len(response),
+            "modified_files": list(modified_files.keys()) if 'modified_files' in locals() else [],
+            "settings": {
+                "auto_confirm": args.yes,
+                "files_parameter": args.files if args.files else None
+            }
+        }
+    
+        with open("commander.json", "w", encoding="utf-8") as json_file:
+            json.dump(metadata, json_file, indent=2, ensure_ascii=False)
+        print(f"✅ Processing metadata saved to commander.json")
+    
+    except Exception as e:
+        print(f"❌ Failed to write commander.json: {e}")
+
+    # Step 6: Parse response and update files
     print("\n🔄 Parsing response and updating files...")
     response_parser = ResponseParser()
     modified_files = response_parser.parse_response(response)
@@ -522,7 +528,7 @@ def main():
                 print(f"❌ Failed to create directory {file_path.parent}: {e}")
             
     if not modified_files:
-        print("No files were modified by Gemini.")
+        print("No files were modified by LLM.")
         return
     
     print(f"Files to be modified: {len(modified_files)}")
@@ -550,3 +556,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

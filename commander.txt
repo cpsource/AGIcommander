@@ -1,12 +1,5 @@
-The subdirectory tmp/ explores an approach to reduce neural network training time by separating metadata from text and using a two-stage training process:
+I’ve attached README-commander.md and commander.py.
+Please update README-commander.md to reflect all current command-line switches and functionality in the latest commander.py.
+Specifically, make sure the -m switch and any other undocumented options are clearly included, with explanations and usage examples where appropriate.
+Ensure the README is accurate, clear, and complete for users of the tool.
 
-Stage 1: Train the network on metadata first, then freeze those layers
-Stage 2: Train on the actual text data with the metadata layers frozen
-
-The approach involves:
-
-Running sentence text through semantic and metadata pre-processors
-Splitting training into two distinct phases
-Leveraging metadata to bootstrap the learning process
-
-I have various tools available through the MCP interface. Could you create a README-pre-processor.md file that outlines this approach and provide sample code to implement this two-stage training strategy?"
