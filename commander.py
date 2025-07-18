@@ -27,21 +27,39 @@ from typing import List, Dict, Tuple
 import re
 from dotenv import load_dotenv
 
+# Determine the script's home directory and add to Python path
+SCRIPT_DIR = Path(__file__).parent.absolute()
+sys.path.insert(0, str(SCRIPT_DIR))
+
 # Import the comutl library
-from comutl import get_llm_class, MODEL_REGISTRY
+try:
+    from comutl import get_llm_class, MODEL_REGISTRY
+except ImportError as e:
+    print(f"❌ Error importing comutl library: {e}")
+    print(f"📂 Script directory: {SCRIPT_DIR}")
+    print(f"🐍 Python path: {sys.path}")
+    print("💡 Make sure the comutl/ directory exists in the same location as commander.py")
+    sys.exit(1)
 
 def read_system_txt(filename: str = "system.txt") -> str:
     """Read system.txt, skipping comment lines starting with '#'."""
-    try:
-        with open(filename, 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-        non_comment_lines = [line for line in lines if not line.strip().startswith('#')]
-        return "".join(non_comment_lines).strip()
-    except FileNotFoundError:
-        return ""
-    except Exception as e:
-        print(f"Error reading {filename}: {e}")
-        return ""
+    # Try current directory first, then script directory
+    search_paths = [Path.cwd() / filename, SCRIPT_DIR / filename]
+    
+    for path in search_paths:
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+            non_comment_lines = [line for line in lines if not line.strip().startswith('#')]
+            print(f"📋 Found {filename} at: {path}")
+            return "".join(non_comment_lines).strip()
+        except FileNotFoundError:
+            continue
+        except Exception as e:
+            print(f"Error reading {path}: {e}")
+            continue
+    
+    return ""
 
 class FileProcessor:
     """Handles finding and reading files with specified extensions"""
@@ -226,17 +244,27 @@ class CommanderInstructions:
         
     def read_instructions(self) -> str:
         """Read the instructions from commander.txt"""
-        try:
-            with open(self.instructions_file, 'r', encoding='utf-8') as f:
-                self.instructions = f.read().strip()
-                return self.instructions
-        except FileNotFoundError:
-            print(f"Error: {self.instructions_file} not found!")
-            print("Please create commander.txt with your processing instructions.")
-            sys.exit(1)
-        except Exception as e:
-            print(f"Error reading {self.instructions_file}: {e}")
-            sys.exit(1)
+        # Try current directory first, then script directory
+        search_paths = [Path.cwd() / self.instructions_file, SCRIPT_DIR / self.instructions_file]
+        
+        for path in search_paths:
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    self.instructions = f.read().strip()
+                    print(f"📋 Found {self.instructions_file} at: {path}")
+                    return self.instructions
+            except FileNotFoundError:
+                continue
+            except Exception as e:
+                print(f"Error reading {path}: {e}")
+                continue
+        
+        print(f"Error: {self.instructions_file} not found!")
+        print("Searched in:")
+        for path in search_paths:
+            print(f"  • {path}")
+        print(f"Please create {self.instructions_file} with your processing instructions.")
+        sys.exit(1)
 
 
 class ResponseParser:
@@ -387,8 +415,18 @@ def get_api_key_for_model(model_name: str) -> str:
 
 def main():
     """Main execution function"""
-    # Load environment variables
-    load_dotenv(os.path.expanduser("~/.env"))
+    # Load environment variables from multiple locations
+    env_paths = [
+        os.path.expanduser("~/.env"),  # User home directory
+        Path.cwd() / ".env",           # Current working directory
+        SCRIPT_DIR / ".env"            # Script directory
+    ]
+    
+    for env_path in env_paths:
+        if Path(env_path).exists():
+            load_dotenv(env_path)
+            print(f"🔧 Loaded environment from: {env_path}")
+            break
     
     # Parse command line arguments
     parser = argparse.ArgumentParser(description="Process files with various LLM providers")
@@ -429,6 +467,8 @@ def main():
     
     print("🚀 Commander.py - Multi-Language File Processor")
     print("=" * 50)
+    print(f"📂 Script directory: {SCRIPT_DIR}")
+    print(f"📂 Working directory: {Path.cwd()}")
     print(f"🤖 Using model: {args.model}")
     print(f"📋 Target extensions: {', '.join(extensions)}")
     print(f"💡 Tip: Place '.skip-commander' file in directories to skip them")
@@ -518,15 +558,17 @@ def main():
     
     print(f"Received response: {len(response)} characters")
  
-    # Write LLM response to commander.log
+    # Write LLM response to commander.log (in current working directory)
+    log_file_path = Path.cwd() / "commander.log"
     try:
-        with open("commander.log", "w", encoding="utf-8") as log_file:
+        with open(log_file_path, "w", encoding="utf-8") as log_file:
             log_file.write(response)
-        print(f"✅ LLM response saved to commander.log ({len(response)} characters)")
+        print(f"✅ LLM response saved to {log_file_path} ({len(response)} characters)")
     except Exception as e:
-        print(f"❌ Failed to write commander.log: {e}")
+        print(f"❌ Failed to write {log_file_path}: {e}")
 
-    # Write pretty-printed JSON metadata to commander.json
+    # Write pretty-printed JSON metadata to commander.json (in current working directory)
+    json_file_path = Path.cwd() / "commander.json"
     try:
         import json
         from datetime import datetime
@@ -534,6 +576,8 @@ def main():
         # Create metadata about the processing session
         metadata = {
             "timestamp": datetime.now().isoformat(),
+            "script_directory": str(SCRIPT_DIR),
+            "working_directory": str(Path.cwd()),
             "model": args.model,
             "model_name": llm_processor.model_name,
             "files_processed": list(files_data.keys()),
@@ -549,12 +593,12 @@ def main():
             }
         }
     
-        with open("commander.json", "w", encoding="utf-8") as json_file:
+        with open(json_file_path, "w", encoding="utf-8") as json_file:
             json.dump(metadata, json_file, indent=2, ensure_ascii=False)
-        print(f"✅ Processing metadata saved to commander.json")
+        print(f"✅ Processing metadata saved to {json_file_path}")
     
     except Exception as e:
-        print(f"❌ Failed to write commander.json: {e}")
+        print(f"❌ Failed to write {json_file_path}: {e}")
 
     # Step 6: Parse response and update files
     print("\n🔄 Parsing response and updating files...")
@@ -593,6 +637,7 @@ def main():
     
     print("\n✨ Processing complete!")
     print("Backups created with .backup extension")
+    print(f"📄 Log files saved to: {Path.cwd()}")
     
     if file_processor.skipped_directories:
         print(f"\n📁 Note: {len(file_processor.skipped_directories)} directories were skipped due to .skip-commander files")
@@ -600,3 +645,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
