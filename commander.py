@@ -10,7 +10,7 @@ Usage:
     
     -r: Process files recursively through subdirectories
     -x: Comma-separated list of file extensions (default: "py")
-        Example: -x "py,json,md" or -x "js,html,css"
+        Example: -x "py,json,md" or -x "js,html,css" or -x "docx,txt"
     -y: Automatically confirm file modifications (skip confirmation prompt)
     -m: Model to use (default: "gemini")
         Options: gemini, claude, chatgpt, xai, watsonx
@@ -141,11 +141,44 @@ class FileProcessor:
         
         return filtered_files
     
+    def read_docx_content(self, file_path: str) -> str:
+        """Read content from a .docx file"""
+        try:
+            import mammoth
+            with open(file_path, 'rb') as docx_file:
+                result = mammoth.extract_raw_text(docx_file)
+                return result.value
+        except ImportError:
+            print(f"⚠️  mammoth library required for .docx files. Install with: pip install mammoth")
+            print(f"⚠️  Skipping {file_path}")
+            return ""
+        except Exception as e:
+            print(f"Warning: Could not read .docx file {file_path}: {e}")
+            return ""
+    
     def read_file_content(self, file_path: str) -> str:
         """Read the content of a file"""
+        file_extension = Path(file_path).suffix.lower()
+        
+        # Handle .docx files specially
+        if file_extension == '.docx':
+            return self.read_docx_content(file_path)
+        
+        # Handle regular text files
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 return f.read()
+        except UnicodeDecodeError:
+            # Try different encodings for text files
+            for encoding in ['latin-1', 'cp1252', 'iso-8859-1']:
+                try:
+                    with open(file_path, 'r', encoding=encoding) as f:
+                        print(f"⚠️  Used {encoding} encoding for {file_path}")
+                        return f.read()
+                except UnicodeDecodeError:
+                    continue
+            print(f"Warning: Could not decode {file_path} with any common encoding")
+            return ""
         except Exception as e:
             print(f"Warning: Could not read {file_path}: {e}")
             return ""
@@ -169,7 +202,9 @@ class FileProcessor:
             'sql': 'sql',
             'sh': 'bash',
             'bash': 'bash',
-            'txt': '',  # Plain text, no language specifier
+            'txt': 'text',
+            'docx': 'text',  # .docx files are treated as text
+            'doc': 'text',   # .doc files (if supported in future)
             'c': 'c',
             'cpp': 'cpp',
             'java': 'java',
@@ -179,7 +214,7 @@ class FileProcessor:
             'rs': 'rust',
         }
         
-        return language_map.get(extension, '')
+        return language_map.get(extension, 'text')
 
 
 class CommanderInstructions:
@@ -299,6 +334,11 @@ class ResponseParser:
                     os.rename(filename, backup_name)
                     print(f"📁 Created backup: {backup_name}")
                 
+                # Check if this is a .docx file - we can't write those back
+                if filename.lower().endswith('.docx'):
+                    print(f"⚠️  Cannot write back to .docx format. Saving as {filename}.txt instead")
+                    filename = f"{filename}.txt"
+                
                 # Write new content
                 with open(filename, 'w', encoding='utf-8') as f:
                     f.write(content)
@@ -355,7 +395,7 @@ def main():
     parser.add_argument("-r", "--recursive", action="store_true", 
                        help="Process files recursively through subdirectories")
     parser.add_argument("-x", "--extensions", type=str, default="py",
-                       help="Comma-separated list of file extensions (default: py). Example: 'py,json,md'")
+                       help="Comma-separated list of file extensions (default: py). Example: 'py,json,md,docx'")
     parser.add_argument("-y", "--yes", action="store_true",
                        help="Automatically confirm file modifications (skip confirmation prompt)")
     parser.add_argument("-m", "--model", type=str, default="gemini",
@@ -392,6 +432,10 @@ def main():
     print(f"🤖 Using model: {args.model}")
     print(f"📋 Target extensions: {', '.join(extensions)}")
     print(f"💡 Tip: Place '.skip-commander' file in directories to skip them")
+    
+    # Check if docx files are being processed and warn about mammoth dependency
+    if 'docx' in extensions:
+        print(f"📄 Note: .docx files require 'mammoth' library. Install with: pip install mammoth")
     
     # Step 1: Find files
     found_files = []
@@ -556,4 +600,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
