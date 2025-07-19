@@ -1,3 +1,1 @@
-iI’ve attached one or more files matching README-*.docx.
-
-Please review the content and generate a concise summary in Markdown format, saving it as README-colloquy.md.
+Please download a file called time.txt that contains the current time.
