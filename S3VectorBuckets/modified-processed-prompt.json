@@ -1,0 +1,56 @@
+{
+  "term": "new_iPhone_model-product",
+  "context": "Object in triplet: Apple-company -> creates -> new_iPhone_model-product",
+  "reasoning": "The vector for 'new_iPhone_model-product' reflects its identity as a highly anticipated, new, and expensive piece of consumer technology. It is a physical object that is perceived as simple to use, personally valuable, and beneficial, despite its high cost and the complex technology it contains. As an object, it is submissive to the user's control.",
+  "vector": [0.9, -0.4, 0.1, 0.9, 0.9, -0.8, -0.9, 0.8, -0.8, -0.8, 0.4, 0.0, -0.9, 0.9, -1.0, 1.0, 0.9, -0.5, 0.5, 0.9, 0.9, 0.8, 0.9, -1.0, 0.9, -1.0, 0.9, -1.0, -0.8, 0.8, -0.9, 1.0],
+  "dimensions": {
+    "emotional_valence": {
+      "positive": {"index": 0, "value": 0.9, "explanation": "High positive anticipation for new Apple products"},
+      "negative": {"index": 1, "value": -0.4, "explanation": "Negative sentiment often related to high price or incremental updates"},
+      "neutral": {"index": 2, "value": 0.1, "explanation": "Low neutral sentiment due to strong opinions"},
+      "intensity": {"index": 3, "value": 0.9, "explanation": "Product launches are high-intensity media and consumer events"}
+    },
+    "safety_danger": {
+      "safe": {"index": 4, "value": 0.9, "explanation": "Regulated consumer electronic, considered very safe to use"},
+      "risky": {"index": 5, "value": -0.8, "explanation": "Low physical risk to the user"},
+      "harmful": {"index": 6, "value": -0.9, "explanation": "Not considered inherently harmful"},
+      "beneficial": {"index": 7, "value": 0.8, "explanation": "Provides significant utility and benefit to the user"}
+    },
+    "physical_properties": {
+      "size": {"index": 8, "value": -0.8, "explanation": "It is a small, handheld device"},
+      "weight": {"index": 9, "value": -0.8, "explanation": "It is a lightweight object"},
+      "hardness": {"index": 10, "value": 0.4, "explanation": "Moderately hard, made of glass and metal"},
+      "temperature": {"index": 11, "value": 0.0, "explanation": "Operates at a neutral ambient temperature"}
+    },
+    "temporal_aspects": {
+      "permanent": {"index": 12, "value": -0.9, "explanation": "Intended to be replaced by future models"},
+      "temporary": {"index": 13, "value": 0.9, "explanation": "Its status as 'new' is temporary"},
+      "old": {"index": 14, "value": -1.0, "explanation": "It is explicitly 'new'"},
+      "new": {"index": 15, "value": 1.0, "explanation": "The defining temporal characteristic is being new"}
+    },
+    "social_aspects": {
+      "public": {"index": 16, "value": 0.9, "explanation": "A widely known and publicly sold consumer product"},
+      "private": {"index": 17, "value": -0.5, "explanation": "Used for private communications and data"},
+      "collaborative": {"index": 18, "value": 0.5, "explanation": "Enables collaboration through apps and communication"},
+      "individual": {"index": 19, "value": 0.9, "explanation": "Primarily designed and used as a personal device"}
+    },
+    "cognitive_load": {
+      "simple": {"index": 20, "value": 0.9, "explanation": "Marketed and designed for user-friendliness and simplicity"},
+      "complex": {"index": 21, "value": 0.8, "explanation": "The underlying technology is highly complex"},
+      "familiar": {"index": 22, "value": 0.9, "explanation": "The product category and user interface are very familiar to many"},
+      "abstract": {"index": 23, "value": -1.0, "explanation": "It is a concrete, physical object, not an abstract concept"}
+    },
+    "economic_value": {
+      "expensive": {"index": 24, "value": 0.9, "explanation": "Positioned as a premium, expensive product"},
+      "cheap": {"index": 25, "value": -1.0, "explanation": "The opposite of a cheap product"},
+      "valuable": {"index": 26, "value": 0.9, "explanation": "Considered highly valuable by consumers"},
+      "worthless": {"index": 27, "value": -1.0, "explanation": "The opposite of worthless"}
+    },
+    "power_control": {
+      "powerful": {"index": 28, "value": -0.8, "explanation": "As an object, it is a tool and not powerful in itself"},
+      "weak": {"index": 29, "value": 0.8, "explanation": "It is an inanimate object, therefore conceptually weak"},
+      "controlling": {"index": 30, "value": -0.9, "explanation": "It does not exert control; it is controlled"},
+      "submissive": {"index": 31, "value": 1.0, "explanation": "It is entirely submissive to the actions of the user"}
+    }
+  }
+}

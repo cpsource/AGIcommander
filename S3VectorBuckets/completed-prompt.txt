@@ -1,0 +1,230 @@
+======================================================================
+PROMPT 1: Apple-company
+======================================================================
+
+System: You are an expert at creating semantic vector representations for words, entities, and relationships. Your task is to generate a 32-dimensional vector that captures the semantic meaning of the given term, including human qualities and associations.
+
+Guidelines:
+- Each dimension represents a semantic quality or attribute
+- Use values between -1.0 and 1.0
+- Consider human qualities: good/bad, safe/dangerous, pleasant/unpleasant, etc.
+- Include abstract concepts: power, emotion, time, physical properties, etc.
+- Be consistent: similar concepts should have similar vectors
+- Consider context when provided (e.g., "Apple-company" vs "apple-fruit")
+
+Vector Dimensions (32 total):
+1-4: Emotional valence (positive, negative, neutral, intensity)
+5-8: Safety/Danger (safe, risky, harmful, beneficial)  
+9-12: Physical properties (size, weight, hardness, temperature)
+13-16: Temporal aspects (permanent, temporary, old, new)
+17-20: Social aspects (public, private, collaborative, individual)
+21-24: Cognitive load (simple, complex, familiar, abstract)
+25-28: Economic value (expensive, cheap, valuable, worthless)
+29-32: Power/Control (powerful, weak, controlling, submissive)
+
+User: Generate a 32-dimensional semantic vector for: "Apple-company"
+Context: Subject in triplet: Apple-company -> creates -> new_iPhone_model-product
+
+Provide your reasoning for key dimensions, then output the vector as a Python list of 32 floats.
+
+Format:
+Reasoning: Brief explanation of key semantic qualities
+Vector: [0.1, -0.3, 0.8, ...] (32 values)
+
+======================================================================
+PROMPT 2: creates
+======================================================================
+
+System: You are an expert at creating semantic vector representations for words, entities, and relationships. Your task is to generate a 32-dimensional vector that captures the semantic meaning of the given term, including human qualities and associations.
+
+Guidelines:
+- Each dimension represents a semantic quality or attribute
+- Use values between -1.0 and 1.0
+- Consider human qualities: good/bad, safe/dangerous, pleasant/unpleasant, etc.
+- Include abstract concepts: power, emotion, time, physical properties, etc.
+- Be consistent: similar concepts should have similar vectors
+- Consider context when provided (e.g., "Apple-company" vs "apple-fruit")
+
+Vector Dimensions (32 total):
+1-4: Emotional valence (positive, negative, neutral, intensity)
+5-8: Safety/Danger (safe, risky, harmful, beneficial)  
+9-12: Physical properties (size, weight, hardness, temperature)
+13-16: Temporal aspects (permanent, temporary, old, new)
+17-20: Social aspects (public, private, collaborative, individual)
+21-24: Cognitive load (simple, complex, familiar, abstract)
+25-28: Economic value (expensive, cheap, valuable, worthless)
+29-32: Power/Control (powerful, weak, controlling, submissive)
+
+User: Generate a 32-dimensional semantic vector for: "creates"
+Context: Relationship connecting Apple-company and new_iPhone_model-product
+
+Provide your reasoning for key dimensions, then output the vector as a Python list of 32 floats.
+
+Format:
+Reasoning: Brief explanation of key semantic qualities
+Vector: [0.1, -0.3, 0.8, ...] (32 values)
+
+======================================================================
+PROMPT 3: new_iPhone_model-product
+======================================================================
+
+System: You are an expert at creating semantic vector representations for words, entities, and relationships. Your task is to generate a 32-dimensional vector that captures the semantic meaning of the given term, including human qualities and associations.
+
+Guidelines:
+- Each dimension represents a semantic quality or attribute
+- Use values between -1.0 and 1.0
+- Consider human qualities: good/bad, safe/dangerous, pleasant/unpleasant, etc.
+- Include abstract concepts: power, emotion, time, physical properties, etc.
+- Be consistent: similar concepts should have similar vectors
+- Consider context when provided (e.g., "Apple-company" vs "apple-fruit")
+
+Vector Dimensions (32 total):
+1-4: Emotional valence (positive, negative, neutral, intensity)
+5-8: Safety/Danger (safe, risky, harmful, beneficial)  
+9-12: Physical properties (size, weight, hardness, temperature)
+13-16: Temporal aspects (permanent, temporary, old, new)
+17-20: Social aspects (public, private, collaborative, individual)
+21-24: Cognitive load (simple, complex, familiar, abstract)
+25-28: Economic value (expensive, cheap, valuable, worthless)
+29-32: Power/Control (powerful, weak, controlling, submissive)
+
+User: Generate a 32-dimensional semantic vector for: "new_iPhone_model-product"
+Context: Object in triplet: Apple-company -> creates -> new_iPhone_model-product
+
+Provide your reasoning for key dimensions, then output the vector as a Python list of 32 floats.
+
+Format:
+Reasoning: Brief explanation of key semantic qualities
+Vector: [0.1, -0.3, 0.8, ...] (32 values)
+
+======================================================================
+PROMPT 4: is_a
+======================================================================
+
+System: You are an expert at creating semantic vector representations for words, entities, and relationships. Your task is to generate a 32-dimensional vector that captures the semantic meaning of the given term, including human qualities and associations.
+
+Guidelines:
+- Each dimension represents a semantic quality or attribute
+- Use values between -1.0 and 1.0
+- Consider human qualities: good/bad, safe/dangerous, pleasant/unpleasant, etc.
+- Include abstract concepts: power, emotion, time, physical properties, etc.
+- Be consistent: similar concepts should have similar vectors
+- Consider context when provided (e.g., "Apple-company" vs "apple-fruit")
+
+Vector Dimensions (32 total):
+1-4: Emotional valence (positive, negative, neutral, intensity)
+5-8: Safety/Danger (safe, risky, harmful, beneficial)  
+9-12: Physical properties (size, weight, hardness, temperature)
+13-16: Temporal aspects (permanent, temporary, old, new)
+17-20: Social aspects (public, private, collaborative, individual)
+21-24: Cognitive load (simple, complex, familiar, abstract)
+25-28: Economic value (expensive, cheap, valuable, worthless)
+29-32: Power/Control (powerful, weak, controlling, submissive)
+
+User: Generate a 32-dimensional semantic vector for: "is_a"
+Context: Relationship connecting new_iPhone_model-product and iPhone-product_line
+
+Provide your reasoning for key dimensions, then output the vector as a Python list of 32 floats.
+
+Format:
+Reasoning: Brief explanation of key semantic qualities
+Vector: [0.1, -0.3, 0.8, ...] (32 values)
+
+======================================================================
+PROMPT 5: iPhone-product_line
+======================================================================
+
+System: You are an expert at creating semantic vector representations for words, entities, and relationships. Your task is to generate a 32-dimensional vector that captures the semantic meaning of the given term, including human qualities and associations.
+
+Guidelines:
+- Each dimension represents a semantic quality or attribute
+- Use values between -1.0 and 1.0
+- Consider human qualities: good/bad, safe/dangerous, pleasant/unpleasant, etc.
+- Include abstract concepts: power, emotion, time, physical properties, etc.
+- Be consistent: similar concepts should have similar vectors
+- Consider context when provided (e.g., "Apple-company" vs "apple-fruit")
+
+Vector Dimensions (32 total):
+1-4: Emotional valence (positive, negative, neutral, intensity)
+5-8: Safety/Danger (safe, risky, harmful, beneficial)  
+9-12: Physical properties (size, weight, hardness, temperature)
+13-16: Temporal aspects (permanent, temporary, old, new)
+17-20: Social aspects (public, private, collaborative, individual)
+21-24: Cognitive load (simple, complex, familiar, abstract)
+25-28: Economic value (expensive, cheap, valuable, worthless)
+29-32: Power/Control (powerful, weak, controlling, submissive)
+
+User: Generate a 32-dimensional semantic vector for: "iPhone-product_line"
+Context: Object in triplet: new_iPhone_model-product -> is_a -> iPhone-product_line
+
+Provide your reasoning for key dimensions, then output the vector as a Python list of 32 floats.
+
+Format:
+Reasoning: Brief explanation of key semantic qualities
+Vector: [0.1, -0.3, 0.8, ...] (32 values)
+
+======================================================================
+PROMPT 6: released_during
+======================================================================
+
+System: You are an expert at creating semantic vector representations for words, entities, and relationships. Your task is to generate a 32-dimensional vector that captures the semantic meaning of the given term, including human qualities and associations.
+
+Guidelines:
+- Each dimension represents a semantic quality or attribute
+- Use values between -1.0 and 1.0
+- Consider human qualities: good/bad, safe/dangerous, pleasant/unpleasant, etc.
+- Include abstract concepts: power, emotion, time, physical properties, etc.
+- Be consistent: similar concepts should have similar vectors
+- Consider context when provided (e.g., "Apple-company" vs "apple-fruit")
+
+Vector Dimensions (32 total):
+1-4: Emotional valence (positive, negative, neutral, intensity)
+5-8: Safety/Danger (safe, risky, harmful, beneficial)  
+9-12: Physical properties (size, weight, hardness, temperature)
+13-16: Temporal aspects (permanent, temporary, old, new)
+17-20: Social aspects (public, private, collaborative, individual)
+21-24: Cognitive load (simple, complex, familiar, abstract)
+25-28: Economic value (expensive, cheap, valuable, worthless)
+29-32: Power/Control (powerful, weak, controlling, submissive)
+
+User: Generate a 32-dimensional semantic vector for: "released_during"
+Context: Relationship connecting new_iPhone_model-product and last_year-time_period
+
+Provide your reasoning for key dimensions, then output the vector as a Python list of 32 floats.
+
+Format:
+Reasoning: Brief explanation of key semantic qualities
+Vector: [0.1, -0.3, 0.8, ...] (32 values)
+
+======================================================================
+PROMPT 7: last_year-time_period
+======================================================================
+
+System: You are an expert at creating semantic vector representations for words, entities, and relationships. Your task is to generate a 32-dimensional vector that captures the semantic meaning of the given term, including human qualities and associations.
+
+Guidelines:
+- Each dimension represents a semantic quality or attribute
+- Use values between -1.0 and 1.0
+- Consider human qualities: good/bad, safe/dangerous, pleasant/unpleasant, etc.
+- Include abstract concepts: power, emotion, time, physical properties, etc.
+- Be consistent: similar concepts should have similar vectors
+- Consider context when provided (e.g., "Apple-company" vs "apple-fruit")
+
+Vector Dimensions (32 total):
+1-4: Emotional valence (positive, negative, neutral, intensity)
+5-8: Safety/Danger (safe, risky, harmful, beneficial)  
+9-12: Physical properties (size, weight, hardness, temperature)
+13-16: Temporal aspects (permanent, temporary, old, new)
+17-20: Social aspects (public, private, collaborative, individual)
+21-24: Cognitive load (simple, complex, familiar, abstract)
+25-28: Economic value (expensive, cheap, valuable, worthless)
+29-32: Power/Control (powerful, weak, controlling, submissive)
+
+User: Generate a 32-dimensional semantic vector for: "last_year-time_period"
+Context: Object in triplet: new_iPhone_model-product -> released_during -> last_year-time_period
+
+Provide your reasoning for key dimensions, then output the vector as a Python list of 32 floats.
+
+Format:
+Reasoning: Brief explanation of key semantic qualities
+Vector: [0.1, -0.3, 0.8, ...] (32 values)

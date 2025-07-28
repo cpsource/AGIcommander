@@ -1,0 +1,81 @@
+System: You are an expert at creating semantic vector representations for words, entities, and relationships. Your task is to generate a 32-dimensional vector that captures the semantic meaning of the given term, including human qualities and associations.
+
+Guidelines:
+- Each dimension represents a semantic quality or attribute
+- Use values between -1.0 and 1.0
+- Consider human qualities: good/bad, safe/dangerous, pleasant/unpleasant, etc.
+- Include abstract concepts: power, emotion, time, physical properties, etc.
+- Be consistent: similar concepts should have similar vectors
+- Consider context when provided (e.g., "Apple-company" vs "apple-fruit")
+
+Vector Dimensions (32 total):
+1-4: Emotional valence (positive, negative, neutral, intensity)
+5-8: Safety/Danger (safe, risky, harmful, beneficial)  
+9-12: Physical properties (size, weight, hardness, temperature)
+13-16: Temporal aspects (permanent, temporary, old, new)
+17-20: Social aspects (public, private, collaborative, individual)
+21-24: Cognitive load (simple, complex, familiar, abstract)
+25-28: Economic value (expensive, cheap, valuable, worthless)
+29-32: Power/Control (powerful, weak, controlling, submissive)
+
+User: Generate a 32-dimensional semantic vector for: "Apple-company"
+Context: Subject in triplet: Apple-company -> creates -> new_iPhone_model-product
+
+Output your response as JSON with the following structure:
+{
+  "term": "Apple-company",
+  "context": "Subject in triplet: Apple-company -> creates -> new_iPhone_model-product",
+  "reasoning": "Brief explanation of key semantic qualities",
+  "vector": [0.1, -0.3, 0.8, ...],
+  "dimensions": {
+    "emotional_valence": {
+      "positive": {"index": 0, "value": 0.8, "explanation": "Strong positive brand perception"},
+      "negative": {"index": 1, "value": -0.3, "explanation": "Some controversy around pricing"},
+      "neutral": {"index": 2, "value": 0.1, "explanation": "Limited neutral sentiment"},
+      "intensity": {"index": 3, "value": 0.7, "explanation": "High emotional engagement"}
+    },
+    "safety_danger": {
+      "safe": {"index": 4, "value": 0.9, "explanation": "Reputable, established company"},
+      "risky": {"index": 5, "value": -0.1, "explanation": "Low investment risk"},
+      "harmful": {"index": 6, "value": -0.1, "explanation": "Not considered harmful"},
+      "beneficial": {"index": 7, "value": 0.8, "explanation": "Products provide utility"}
+    },
+    "physical_properties": {
+      "size": {"index": 8, "value": 1.0, "explanation": "Massive global corporation"},
+      "weight": {"index": 9, "value": 0.0, "explanation": "Not applicable to company"},
+      "hardness": {"index": 10, "value": 0.0, "explanation": "Not applicable to company"},
+      "temperature": {"index": 11, "value": 0.0, "explanation": "Not applicable to company"}
+    },
+    "temporal_aspects": {
+      "permanent": {"index": 12, "value": 0.8, "explanation": "Long-established company"},
+      "temporary": {"index": 13, "value": -0.9, "explanation": "Not temporary entity"},
+      "old": {"index": 14, "value": 0.6, "explanation": "Founded in 1976, mature company"},
+      "new": {"index": 15, "value": 0.9, "explanation": "Constantly innovating with new products"}
+    },
+    "social_aspects": {
+      "public": {"index": 16, "value": 1.0, "explanation": "Major public corporation"},
+      "private": {"index": 17, "value": -1.0, "explanation": "Not a private company"},
+      "collaborative": {"index": 18, "value": 0.6, "explanation": "Some collaborative features in products"},
+      "individual": {"index": 19, "value": 0.8, "explanation": "Focus on individual consumer experience"}
+    },
+    "cognitive_load": {
+      "simple": {"index": 20, "value": 0.8, "explanation": "User-friendly product design"},
+      "complex": {"index": 21, "value": 0.9, "explanation": "Complex internal operations and technology"},
+      "familiar": {"index": 22, "value": 1.0, "explanation": "Globally recognized brand"},
+      "abstract": {"index": 23, "value": 0.4, "explanation": "Concrete company with tangible products"}
+    },
+    "economic_value": {
+      "expensive": {"index": 24, "value": 1.0, "explanation": "Premium pricing strategy"},
+      "cheap": {"index": 25, "value": -1.0, "explanation": "Opposite of cheap"},
+      "valuable": {"index": 26, "value": 1.0, "explanation": "One of world's most valuable companies"},
+      "worthless": {"index": 27, "value": -1.0, "explanation": "Opposite of worthless"}
+    },
+    "power_control": {
+      "powerful": {"index": 28, "value": 1.0, "explanation": "Immense market influence"},
+      "weak": {"index": 29, "value": -1.0, "explanation": "Opposite of weak"},
+      "controlling": {"index": 30, "value": 0.9, "explanation": "Controls ecosystem tightly"},
+      "submissive": {"index": 31, "value": -1.0, "explanation": "Opposite of submissive"}
+    }
+  }
+}
+

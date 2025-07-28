@@ -1,0 +1,26 @@
+{
+  "sentence": "Apple released a new iPhone model last year.",
+  "triplets": [
+    {
+      "subject": "Apple-company",
+      "relationship": "creates",
+      "object": "new_iPhone_model-product",
+      "confidence": 0.98,
+      "explanation": "The sentence explicitly states that 'Apple' (the company) 'released' (a form of 'creates' or makes available) a 'new iPhone model' (the product)."
+    },
+    {
+      "subject": "new_iPhone_model-product",
+      "relationship": "is_a",
+      "object": "iPhone-product_line",
+      "confidence": 0.92,
+      "explanation": "The phrase 'new iPhone model' implies that this entity is a specific type ('is_a') of the broader 'iPhone' product line."
+    },
+    {
+      "subject": "new_iPhone_model-product",
+      "relationship": "released_during",
+      "object": "last_year-time_period",
+      "confidence": 0.95,
+      "explanation": "The sentence specifies the timing of the release event, linking the product ('new iPhone model') to the time frame ('last year')."
+    }
+  ]
+}
